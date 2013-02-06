@@ -9,7 +9,8 @@ module Goose
     def nav_to(place, url = nil, options = {}, &block)
       if goose.at?(place)
         goose.current_address.resolve(url)
-        options.update(Goose.config.active_options) do |k,v1,v2|
+
+        options = options.merge(Goose.config.active_options) do |k,v1,v2|
           k.to_s == 'class' ? "#{v1} #{v2}" : v2
         end
       end
@@ -17,7 +18,7 @@ module Goose
       content << capture(&block) if block
       content_tag(Goose.config.wrapper_tag, content, options)
     end
-    
+
     def nav_at(*places)
       options = places.last.is_a?(Hash) ? places.pop : {}
       nav = options[:in] || :main
